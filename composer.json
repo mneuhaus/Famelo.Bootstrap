@@ -1,0 +1,13 @@
+{
+    "name": "famelo/bootstrap",
+    "type": "typo3-flow-package",
+    "description": "Add description here",
+    "require": {
+        "typo3/flow": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Famelo\\Bootstrap": "Classes"
+        }
+    }
+}
