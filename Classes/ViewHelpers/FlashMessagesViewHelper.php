@@ -19,13 +19,18 @@ class FlashMessagesViewHelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractTagBa
 	protected $tagName = 'div';
 
 	/**
+	 * @var \TYPO3\Flow\I18n\Translator
+	 * @Flow\Inject
+	 */
+	protected $translator;
+
+	/**
 	 * Render method.
 	 *
+	 * @param string $class
 	 * @return string rendered Flash Messages, if there are any.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Mario Rimann <mario@rimann.org>
 	 */
-	public function render() {
+	public function render($class = '') {
 		$flashMessages = $this->controllerContext->getFlashMessageContainer()->getMessagesAndFlush();
 		if (count($flashMessages) > 0) {
 			$tagContent = '';
@@ -50,12 +55,12 @@ class FlashMessagesViewHelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractTagBa
 				// check if there's a title and use it then
 				$title = '';
 				if ($singleFlashMessage->getTitle() != '') {
-					$title = '<strong>' . $singleFlashMessage->getTitle() . '</strong>&nbsp;';
+					$title = '<strong>' . $this->translator->translate(NULL, $singleFlashMessage->getTitle()) . '</strong>&nbsp;';
 				}
 
 				// put it all together
-				$tagContent .= '<div class="alert ' . $severity . '"><strong>' . $title . '</strong>' .
-					$singleFlashMessage->getMessage()  . '</div>';
+				$tagContent .= '<div class="alert ' . $severity . ' ' . $class . '"><strong>' . $title . '</strong>' .
+					$this->translator->translate(NULL, $singleFlashMessage->getMessage())  . '</div>';
 			}
 
 			$this->tag->setContent($tagContent);
