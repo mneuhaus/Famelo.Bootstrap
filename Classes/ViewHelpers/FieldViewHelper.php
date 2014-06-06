@@ -30,13 +30,37 @@ use TYPO3\Fluid\Core\ViewHelper\AbstractViewHelper;
 class FieldViewHelper extends AbstractViewHelper {
 	/**
 	 *
-	 * @param name $name
+	 * @param string $id
+	 * @param string $label
+	 * @param string $property
 	 * @return string Rendered string
 	 * @author Marc Neuhaus <apocalip@gmail.com>
 	 * @api
 	 */
-	public function render($name) {
-		$content = $this->renderChildren();
+	public function render($id, $label, $property) {
+		$formGroupClass = 'form-group';
+		$helpBlock = '';
+
+		$request = $this->controllerContext->getRequest();
+		$validationResults = $request->getInternalArgument('__submittedArgumentValidationResults');
+		$formObjectName = $this->viewHelperVariableContainer->get('TYPO3\Fluid\ViewHelpers\FormViewHelper', 'formObjectName');
+		if ($validationResults !== NULL && $property !== '') {
+			$validationResults = $validationResults->forProperty($formObjectName . '.' . $property);
+			if ($validationResults->getErrors() > 0) {
+				$formGroupClass.= ' has-error';
+				foreach ($validationResults->getErrors() as $error) {
+					$helpBlock.= '<span class="help-block">' . $error->getMessage() . '</span>';
+				}
+			}
+		}
+
+		$content = '<div class="' . $formGroupClass . '">';
+		$content.= '<label for="' . $id . '" class="col-sm-2 control-label">' . $label . '</label>';
+		$content.= '<div class="col-sm-10">';
+		$content.= $this->renderChildren();
+		$content.= $helpBlock;
+		$content.= '</div>';
+		$content.= '</div>';
 		return $content;
 	}
 }
