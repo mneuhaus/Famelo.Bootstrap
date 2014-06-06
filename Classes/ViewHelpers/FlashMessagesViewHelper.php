@@ -55,18 +55,25 @@ class FlashMessagesViewHelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractTagBa
 				// check if there's a title and use it then
 				$title = '';
 				if ($singleFlashMessage->getTitle() != '') {
-					$title = '<strong>' . $this->translator->translate(NULL, $singleFlashMessage->getTitle()) . '</strong>&nbsp;';
+					$title = '<strong>' . $this->translate(NULL, $singleFlashMessage->getTitle()) . '</strong>&nbsp;';
 				}
 
 				// put it all together
 				$tagContent .= '<div class="alert ' . $severity . ' ' . $class . '"><strong>' . $title . '</strong>' .
-					$this->translator->translate(NULL, $singleFlashMessage->getMessage())  . '</div>';
+					$this->translate(NULL, $singleFlashMessage->getMessage())  . '</div>';
 			}
 
 			$this->tag->setContent($tagContent);
 			return $this->tag->render();
 		}
 		return '';
+	}
+
+	public function translate($id, $default) {
+		if (method_exists('\TYPO3\Flow\I18n\Translator', 'translate')) {
+			return $this->translator->translate($id, $default);
+		}
+		return $default;
 	}
 }
 ?>
