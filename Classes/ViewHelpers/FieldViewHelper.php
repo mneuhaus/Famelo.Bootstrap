@@ -46,7 +46,7 @@ class FieldViewHelper extends AbstractViewHelper {
 		$formObjectName = $this->viewHelperVariableContainer->get('TYPO3\Fluid\ViewHelpers\FormViewHelper', 'formObjectName');
 		if ($validationResults !== NULL && $property !== '') {
 			$validationResults = $validationResults->forProperty($formObjectName . '.' . $property);
-			if ($validationResults->getErrors() > 0) {
+			if (count($validationResults->getErrors()) > 0) {
 				$formGroupClass.= ' has-error';
 				foreach ($validationResults->getErrors() as $error) {
 					$helpBlock.= '<span class="help-block">' . $error->getMessage() . '</span>';
