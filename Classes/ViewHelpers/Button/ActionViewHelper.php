@@ -77,8 +77,10 @@ class ActionViewHelper extends FormViewHelper {
 
 		$button = new TagBuilder('button', $formContent);
 		$button->addAttribute('type', 'submit');
+		$button->addAttribute('class', 'link');
 		$content .= $button->render();
 
+		$this->tag->addAttribute('class', 'link');
 		$this->tag->setContent($content);
 		return $this->tag->render();
 	}
